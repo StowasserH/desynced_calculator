@@ -1,15 +1,32 @@
-# This is a sample Python script.
-
-# Press Umschalt+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-# from typing import Self
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+"""A small script that calculates the required factories in Desynced and outputs them as a graphviz diagram.
+   https://github.com/StowasserH/desynced_calculator
+"""
 from __future__ import annotations
 import math
 
+__author__ = "harald@stowasser.tv"
+__copyright__ = "2023 Harald Stowasser"
+__license__ = "MIT"
+__maintainer__ = "Harald Stowasser"
+__email__ = "harald@stowasser.tv"
+__status__ = "Production"
+
 
 class Component:
-    def __init__(self, name, time_to_build: float, *args):
+    """
+        Represents a createable item in Desynced.
+    """
+
+    def __init__(self, name: string, time_to_build: float, *args):
+        """
+            Initializes a buildable item with name, build time and required components.
+
+            :param name: The displayed name of the item
+            :param time_to_build: The time in seconds to build the item
+            :param args: List of components as list[SubCompos]
+        """
         self.tree: list = None
         self.factories: dict = None
         self.name = name
@@ -19,6 +36,13 @@ class Component:
             self.subs.append(comp)
 
     def append(self, component: Component, nr, pos=1):
+        """
+            appends a component to the internal lists
+
+            :param component: The component to add
+            :param nr: number of the needed factories
+            :param pos: level of indentation
+        """
         self.tree.append((component, nr, pos))
         if component.name in self.factories:
             self.factories[component.name] = self.factories[component.name] + nr
@@ -26,6 +50,11 @@ class Component:
             self.factories[component.name] = nr
 
     def count_factorys(self, nr=1):
+        """
+            Calculates the required factories for this component and its subcomponents.
+
+            :param nr: How many factories for this component do you want to build?
+        """
         self.factories = dict()
         self.tree = list()
         print(self.name + ":  " + str(nr))
@@ -34,6 +63,9 @@ class Component:
         print(self.factories)
 
     def create_dot(self):
+        """
+            After a successful count_factorys call, a chart for Graphviz can be generated using this method.
+        """
         print("digraph {")
         for fac in self.factories.keys():
             nr = math.ceil(self.factories[fac])
@@ -51,6 +83,13 @@ class Component:
         print("}")
 
     def __count_factorys(self, component: Component, pos=1, nr=1):
+        """
+            Recursive component for the count_factorys method.
+
+            :param component: The component to add
+            :param pos: level of indentation
+            :param nr: number of the needed factories
+        """
         for sub in component.subs:
             su_time = sub.component.time_to_build * sub.count
             dur_time = nr * su_time / component.time_to_build
@@ -60,7 +99,17 @@ class Component:
 
 
 class SubCompos:
+    """
+        Provides a SubComponent and a counter for how many of these are needed to build the parent.
+    """
+
     def __init__(self, component: Component, count: int):
+        """
+             Initializes a SubComponent.
+
+            :param component: The component
+            :param count: how many of these
+         """
         self.component = component
         self.count = count
 
@@ -90,6 +139,7 @@ if __name__ == '__main__':
     optic_cable = Component("optic_cable", 10, SubCompos(cristal_core, 2), SubCompos(cable, 2))
     matrix = Component("matrix", 64, SubCompos(optic_cable, 4), SubCompos(frame, 2))
     robotic = Component("robotic", 60, SubCompos(matrix, 1), SubCompos(data_core, 1))
+
     robotic.count_factorys(4)
     robotic.create_dot()
 

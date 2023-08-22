@@ -161,15 +161,16 @@ if __name__ == '__main__':
     blight_cristal = Component("blight_cristal", 5)
     laterite = Component("laterite", 6)
 
-    aluminium_rod = Component("aluminium_rod", 16)
-    aluminium_sheet = Component("aluminium_sheet", 24)
+    aluminium_rod = Component("aluminium_rod", 16,SubCompos(laterite, 5),SubCompos(iron_ore, 1))
+    aluminium_sheet = Component("aluminium_sheet", 24, SubCompos(aluminium_rod, 2), SubCompos(silica, 1))
     blight_bar = Component("blight_bar", 22, SubCompos(iron_ingot, 2), SubCompos(blight_cristal, 5))
     transformer = Component("transformer", 10, SubCompos(cristal, 1), SubCompos(iron_hardend_plate,1))
     reaktor = Component("reaktor", 10, SubCompos(blight_bar, 1), SubCompos(transformer, 1))
     human_datacube = Component("human_datacube", 80, SubCompos(laterite, 5), SubCompos(blight_cristal, 1))
     human_research = Component("human_research", 24, SubCompos(human_datacube, 1), SubCompos(matrix, 1))
-    engine = Component("engine", 16)
-
+    engine = Component("engine", 16, SubCompos(aluminium_sheet, 10), SubCompos(reaktor, 1))
+    low_frame=Component("low_frame",24, SubCompos(aluminium_sheet,4),   SubCompos(aluminium_rod,4))
+    satellites = Component("satellites",2000, SubCompos(engine,80), SubCompos(human_research, 80), SubCompos(low_frame,80))
     obsidian = Component("obsidian", 10)
     blight_extraction = Component("blight_extraction", 22)
     blight_plasma = Component("blight_plasma", 30, SubCompos(blight_cristal, 5), SubCompos(blight_extraction, 20))
@@ -187,7 +188,8 @@ if __name__ == '__main__':
     human_research.count_factorys(2)
     microprocessor.count_factorys(2)
     blight_research.count_factorys(2)
-
+    satellites.count_factorys(2)
+    datacube.count_factorys(6)
     robotic.merge_component(electrodes)
     robotic.merge_component(ic_chip)
     robotic.merge_component(virus_research)
@@ -195,6 +197,8 @@ if __name__ == '__main__':
     robotic.merge_component(human_research)
     robotic.merge_component(microprocessor)
     robotic.merge_component(blight_research)
+    robotic.merge_component(satellites)
+    robotic.merge_component(datacube)
     robotic.create_dot()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

@@ -12,7 +12,7 @@ https://dreampuf.github.io/GraphvizOnline/
 
 Then I did the layout with yEd, because that way you can move the proportions and relationships around with the mouse and disentangle them.
 
-![alt layout](./desynct_1.gif)
+![alt layout](./desynct_2.gif)
 
 btw: If someone finds a spelling mistake: Don't complain but correct it. This is a public repository!
 

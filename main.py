@@ -62,6 +62,18 @@ class Component:
         self.__count_factorys(self, 1, nr)
         print(self.factories)
 
+    def merge_component(self, component: Component):
+        for fac in component.factories.keys():
+            nr = math.ceil(component.factories[fac])
+            if fac in self.factories:
+                if nr > self.factories[fac]:
+                    self.factories[fac] = nr
+            else:
+                self.factories[fac] = nr
+        for fac in component.tree:
+            self.tree.append(fac)
+
+
     def create_dot(self):
         """
             After a successful count_factorys call, a chart for Graphviz can be generated using this method.
@@ -133,14 +145,56 @@ if __name__ == '__main__':
     frame = Component("frame", 40, SubCompos(cable, 3), SubCompos(energy_plate, 2))
 
     cristal_powder = Component("cristal_powder", 10, SubCompos(silica, 2), SubCompos(cristal, 5))
-    data_core = Component("data_core", 20, SubCompos(cristal_powder, 1), SubCompos(frame, 1))
+    datacube = Component("data_core", 20, SubCompos(cristal_powder, 1), SubCompos(frame, 1))
     cristal_core = Component("cristal_core", 20, SubCompos(energy_plate, 2), SubCompos(cristal_powder, 2))
 
     optic_cable = Component("optic_cable", 10, SubCompos(cristal_core, 2), SubCompos(cable, 2))
     matrix = Component("matrix", 64, SubCompos(optic_cable, 4), SubCompos(frame, 2))
-    robotic = Component("robotic", 60, SubCompos(matrix, 1), SubCompos(data_core, 1))
+    robotic = Component("robotic", 60, SubCompos(matrix, 1), SubCompos(datacube, 1))
+
+    electrodes = Component("electrodes", 60, SubCompos(matrix, 1), SubCompos(datacube, 1))
+    citin= Component("citin", 30)
+    infected_circuit = Component("infected_circuit", 24, SubCompos(circuit, 1), SubCompos(citin, 1))
+    virus_datacube = Component("virus_datacube", 16, SubCompos(infected_circuit, 1), SubCompos(datacube, 1))
+    virus_research = Component("virus_research", 30, SubCompos(virus_datacube, 1), SubCompos(matrix, 1))
+    ic_chip = Component("ic_chip", 40, SubCompos(cable,5), SubCompos(silicium, 5), SubCompos(circuit, 5))
+    blight_cristal = Component("blight_cristal", 5)
+    laterite = Component("laterite", 6)
+
+    aluminium_rod = Component("aluminium_rod", 16)
+    aluminium_sheet = Component("aluminium_sheet", 24)
+    blight_bar = Component("blight_bar", 22, SubCompos(iron_ingot, 2), SubCompos(blight_cristal, 5))
+    transformer = Component("transformer", 10, SubCompos(cristal, 1), SubCompos(iron_hardend_plate,1))
+    reaktor = Component("reaktor", 10, SubCompos(blight_bar, 1), SubCompos(transformer, 1))
+    human_datacube = Component("human_datacube", 80, SubCompos(laterite, 5), SubCompos(blight_cristal, 1))
+    human_research = Component("human_research", 24, SubCompos(human_datacube, 1), SubCompos(matrix, 1))
+    engine = Component("engine", 16)
+
+    obsidian = Component("obsidian", 10)
+    blight_extraction = Component("blight_extraction", 22)
+    blight_plasma = Component("blight_plasma", 30, SubCompos(blight_cristal, 5), SubCompos(blight_extraction, 20))
+    blight_datacube = Component("blight_datacube", 24, SubCompos(blight_plasma, 5), SubCompos(datacube, 1))
+    blight_research = Component("blight_research", 24, SubCompos(blight_datacube, 1), SubCompos(matrix, 1))
+    ic_chip = Component("ic_chip", 20, SubCompos(cable, 15), SubCompos(silicium, 5), SubCompos(circuit, 5))
+    microprocessor = Component("microprocessor", 20, SubCompos(blight_cristal, 10), SubCompos(blight_plasma, 5),
+                               SubCompos(ic_chip, 1))
 
     robotic.count_factorys(4)
+    electrodes.count_factorys(4)
+    ic_chip.count_factorys(4)
+    virus_research.count_factorys(2)
+    ic_chip.count_factorys(2)
+    human_research.count_factorys(2)
+    microprocessor.count_factorys(2)
+    blight_research.count_factorys(2)
+
+    robotic.merge_component(electrodes)
+    robotic.merge_component(ic_chip)
+    robotic.merge_component(virus_research)
+    robotic.merge_component(ic_chip)
+    robotic.merge_component(human_research)
+    robotic.merge_component(microprocessor)
+    robotic.merge_component(blight_research)
     robotic.create_dot()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

@@ -17,4 +17,8 @@ Then I did the layout with yEd, because that way you can move the proportions an
 btw: If someone finds a spelling mistake: Don't complain but correct it. This is a public repository!
 
 # ToDo List:
-- [ ] Add all components
+- [o] Add all components
+- [X] Add multiple components to the tree
+- [ ] Use correct names
+
+

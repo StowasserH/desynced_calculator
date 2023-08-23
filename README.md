@@ -14,11 +14,43 @@ Then I did the layout with yEd, because that way you can move the proportions an
 
 ![alt layout](./desynct_2.gif)
 
-btw: If someone finds a spelling mistake: Don't complain but correct it. This is a public repository!
+
+# How to run
+The "main.py" program is a very simple Python script, it requires at least version 3.10. You can download Python from https://www.python.org/downloads/.
+
+The easiest way to start the program is to load and start it in the supplied IDE "idle".
+
+To carry out your own calculations, you can now change the part with the calculations:
+```
+    robotic.count_factorys(4)
+    datacube.count_factorys(6)
+    robotic.merge_component(datacube)
+    robotic.create_dot()
+```
+just add and remove Components as you like. 
 
 # ToDo List:
 - [o] Add all components
 - [X] Add multiple components to the tree
 - [ ] Use correct names
 
+## Development
 
+Feel free to use and modify it, but please help me to improve it.
+
+If someone finds a spelling mistake: Don't complain but correct it. This is a public repository!
+
+### Coding style
+
+If you commit code pls try to format it in [PEP8](https://www.python.org/dev/peps/pep-0008/)
+
+
+## Authors
+
+* **Harald Stowasser** - *Initial work* - [StowasserH](https://github.com/StowasserH)
+
+See also the list of [contributors](https://github.com/StowasserH/pylcars/contributors) who participated in this project.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
